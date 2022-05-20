@@ -35,8 +35,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         prices.fold(
           (failure) => emit(const HomeErrorState()),
           (prices) {
-            // _valueMax = _getValueMax(prices.included.attributes.values);
-            // _valueMin = _getValueMin(prices.included.attributes.values);
+            _valueMax = _getValueMax(prices.included.attributes.values);
+            _valueMin = _getValueMin(prices.included.attributes.values);
             emit(HomeLoadedState(newPrices: prices));
           },
         );

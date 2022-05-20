@@ -23,18 +23,33 @@ class _Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const CustomDropdownWidget(),
-        const InputDatepickerWidget(),
-        Divider(
-          thickness: 2,
-          color: Theme.of(context).primaryColor,
-        ),
-        const Expanded(
-          child: _ListPrices(),
-        ),
-      ],
+    final blocProvider = BlocProvider.of<HomeBloc>(context);
+    return RefreshIndicator(
+      onRefresh: () async {
+        blocProvider.add(const LoadingEvent());
+      },
+      child: Column(
+        children: [
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 10),
+            child: const Text(
+              'Elija lugar y día que desee consultar',
+              style: TextStyle(fontSize: 16),
+            ),
+          ),
+          CustomDropdownWidget(
+            geoIds: blocProvider.geoIds,
+          ),
+          const InputDatepickerWidget(),
+          Divider(
+            thickness: 2,
+            color: Theme.of(context).primaryColor,
+          ),
+          const Expanded(
+            child: _ListPrices(),
+          ),
+        ],
+      ),
     );
   }
 }

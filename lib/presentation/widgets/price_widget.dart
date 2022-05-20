@@ -4,13 +4,13 @@ class PriceWidget extends StatelessWidget {
   final String value;
   final String time;
   final Color color;
-  bool isHighestPrice;
-  bool isLowestPrice;
-  bool isCurrentValue;
+  final bool isHighestPrice;
+  final bool isLowestPrice;
+  final bool isCurrentValue;
 
   final double _fontSize = 16;
 
-  PriceWidget({
+  const PriceWidget({
     Key? key,
     required this.value,
     required this.time,
@@ -29,16 +29,22 @@ class PriceWidget extends StatelessWidget {
         _getTextTime(),
         _getTextPrice(),
         if (isHighestPrice)
-          Icon(
-            Icons.trending_up,
-            size: 20,
-            color: color,
+          Container(
+            margin: const EdgeInsets.only(left: 10),
+            child: Icon(
+              Icons.trending_up,
+              size: 20,
+              color: color,
+            ),
           ),
         if (isLowestPrice)
-          Icon(
-            Icons.trending_down,
-            size: 18,
-            color: color,
+          Container(
+            margin: const EdgeInsets.only(left: 10),
+            child: Icon(
+              Icons.trending_down,
+              size: 18,
+              color: color,
+            ),
           ),
       ],
     );

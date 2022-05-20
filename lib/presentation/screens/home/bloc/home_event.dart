@@ -5,11 +5,7 @@ abstract class HomeEvent extends Equatable {
 }
 
 class LoadingEvent extends HomeEvent {
-  final DateTime date;
-
-  const LoadingEvent({
-    required this.date,
-  });
+  const LoadingEvent();
 
   @override
   List<Object?> get props => [];

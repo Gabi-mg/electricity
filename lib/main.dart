@@ -39,7 +39,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final blocProvider = BlocProvider.of<HomeBloc>(context);
-    blocProvider.add(LoadingEvent(date: DateTime.now()));
+    blocProvider.date = DateTime.now();
+    blocProvider.geoId = blocProvider.geoIds[0];
+    blocProvider.add(const LoadingEvent());
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,

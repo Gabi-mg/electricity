@@ -16,7 +16,7 @@ Future<void> initDi() async {
   bool trustSelfSigned = true;
   HttpClient httpClient = HttpClient()
     ..badCertificateCallback =
-    ((X509Certificate cert, String host, int port) => trustSelfSigned);
+        ((X509Certificate cert, String host, int port) => trustSelfSigned);
   IOClient ioClient = IOClient(httpClient);
 
   final client = ChopperClient(
@@ -42,7 +42,5 @@ Future<void> initDi() async {
   serviceLocator.registerLazySingleton(() => PriceUsecase(serviceLocator()));
 
   //Blocs
-  serviceLocator
-      .registerFactory(() => HomeBloc(serviceLocator()) //..add(LoadingEvent()),
-          );
+  serviceLocator.registerFactory(() => HomeBloc(serviceLocator()));
 }

@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:electricity/common/errors/failures.dart';
-import 'package:electricity/domain/entities/enteties.dart';
-import 'package:electricity/domain/entities/geo_id.dart';
+import 'package:electricity/common/utils/utils.dart';
+import 'package:electricity/domain/entities/entities.dart';
 import 'package:electricity/domain/usecases/price_usecase.dart';
 import 'package:equatable/equatable.dart';
 
@@ -13,28 +13,23 @@ part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final PriceUsecase priceUsecase;
+  final List<GeoId> geoIds = Utils.getGeoIds();
 
-  late double _valueMax;
-  late double _valueMin;
-
-  late GeoId _geoId;
-
-  GeoId get geoId => _geoId;
-
-  set geoId(GeoId value) {
-    _geoId = value;
-  }
+  late DateTime date;
+  late GeoId geoId;
+  late double valueMax;
+  late double valueMin;
 
   HomeBloc(this.priceUsecase) : super(const HomeLoadingState()) {
     on<LoadingEvent>(
       (event, emit) async {
         emit(const HomeLoadingState());
-        final prices = await _getPrices(event.date);
+        final prices = await _getPrices();
         prices.fold(
           (failure) => emit(const HomeErrorState()),
           (prices) {
-            _valueMax = _getValueMax(prices.included.attributes.values);
-            _valueMin = _getValueMin(prices.included.attributes.values);
+            valueMax = _getValueMax(prices.included.attributes.values);
+            valueMin = _getValueMin(prices.included.attributes.values);
             emit(HomeLoadedState(newPrices: prices));
           },
         );
@@ -42,12 +37,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     );
   }
 
-  double get valueMax => _valueMax;
-
-  double get valueMin => _valueMin;
-
-  Future<Either<Failure, Prices>> _getPrices(DateTime date) async {
-    date = DateTime.now();
+  Future<Either<Failure, Prices>> _getPrices() async {
     date = DateTime(date.year, date.month, date.day);
     String startDate = date.toIso8601String();
     String endDate =
@@ -55,7 +45,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     PricesParams params = PricesParams(
       startDate,
       endDate,
-      '8741',
+      geoId.geoId,
     );
     final response = await priceUsecase.call(params);
     return response;
@@ -103,7 +93,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   bool isValueNow(Value value) {
-    if (value.datetime.hour < DateTime.now().hour + 1 &&
+    if (value.datetime.day == DateTime.now().day &&
+        value.datetime.month == DateTime.now().month &&
+        value.datetime.year == DateTime.now().year &&
+        value.datetime.hour < DateTime.now().hour + 1 &&
         value.datetime.hour >= DateTime.now().hour) {
       return true;
     }

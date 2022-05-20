@@ -1,3 +1,4 @@
+import 'package:electricity/domain/entities/value.dart';
 import 'package:electricity/presentation/screens/home/bloc/home_bloc.dart';
 import 'package:electricity/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Luz')),
+      appBar: AppBar(title: const Text('Precio de la luz por horas ')),
       body: const _Body(),
     );
   }
@@ -25,10 +26,6 @@ class _Body extends StatelessWidget {
     return Column(
       children: [
         const CustomDropdownWidget(),
-        Divider(
-          thickness: 2,
-          color: Theme.of(context).primaryColor,
-        ),
         const InputDatepickerWidget(),
         Divider(
           thickness: 2,
@@ -55,29 +52,22 @@ class _ListPrices extends StatelessWidget {
       bloc: blocProvider,
       builder: (context, state) {
         if (state.prices != null) {
+          List<Value> values = state.prices!.included.attributes.values;
           return ListView.builder(
-            itemCount: state.prices!.included.attributes.values.length,
+            itemCount: values.length,
             itemBuilder: (BuildContext context, int index) {
-              String value =
-                  state.prices!.included.attributes.values[index].valueKWh;
-              String time =
-                  state.prices!.included.attributes.values[index].hour;
+              String value = values[index].valueKWh;
+              String time = values[index].hour;
 
-              final interval = blocProvider.getInterval(
-                  state.prices!.included.attributes.values,
-                  state.prices!.included.attributes.values[index]);
+              final interval = blocProvider.getInterval(values, values[index]);
 
-              Color color = state.prices!.included.attributes.values[index]
-                  .getColor(interval);
+              Color color = values[index].getColor(interval);
 
-              bool isValueMax = blocProvider.isValueMax(
-                  state.prices!.included.attributes.values[index].value);
+              bool isValueMax = blocProvider.isValueMax(values[index].value);
 
-              bool isValueMin = blocProvider.isValueMin(
-                  state.prices!.included.attributes.values[index].value);
+              bool isValueMin = blocProvider.isValueMin(values[index].value);
 
-              bool isValueNow = blocProvider
-                  .isValueNow(state.prices!.included.attributes.values[index]);
+              bool isValueNow = blocProvider.isValueNow(values[index]);
 
               return PriceWidget(
                 value: value,

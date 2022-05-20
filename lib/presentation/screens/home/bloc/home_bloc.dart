@@ -25,8 +25,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     _geoId = value;
   }
 
-  // final StreamController pricesValuesController = StreamController<Value>[];
-
   HomeBloc(this.priceUsecase) : super(const HomeLoadingState()) {
     on<LoadingEvent>(
       (event, emit) async {

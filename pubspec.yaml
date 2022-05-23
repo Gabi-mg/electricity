@@ -37,6 +37,7 @@ dependencies:
   # Json annotator
   json_annotation: ^4.5.0
   # API manager
+  http: ^0.13.4
   chopper: ^4.0.5
   # Functional programming thingies
   dartz: ^0.10.1
@@ -47,8 +48,8 @@ dependencies:
   flutter_bloc: ^8.0.1
   #splash screen
   flutter_native_splash: ^2.1.6
-
-  http: ^0.13.4
+  #share preferences
+  shared_preferences: ^2.0.15
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

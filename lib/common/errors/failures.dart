@@ -8,3 +8,8 @@ class ServerFailure extends Failure {
   @override
   List<Object?> get props => [];
 }
+
+class BBDDFailure extends Failure {
+  @override
+  List<Object?> get props => [];
+}

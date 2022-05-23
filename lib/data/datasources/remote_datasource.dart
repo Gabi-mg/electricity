@@ -5,7 +5,7 @@ import 'package:electricity/common/errors/exceptions.dart';
 import 'package:electricity/data/models/price_response.dart';
 import 'package:electricity/data/network/rest_client_service.dart';
 
-abstract class PriceDataSource {
+abstract class RemoteDatasource {
   Future<PriceResponse?> getPrices(
     String starDate,
     String endDate,
@@ -13,10 +13,10 @@ abstract class PriceDataSource {
   );
 }
 
-class PriceDataSourceImpl extends PriceDataSource {
+class RemoteDatasourceImpl extends RemoteDatasource {
   final RestClientService restClientService;
 
-  PriceDataSourceImpl(this.restClientService);
+  RemoteDatasourceImpl(this.restClientService);
 
   @override
   Future<PriceResponse?> getPrices(

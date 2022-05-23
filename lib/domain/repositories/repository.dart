@@ -1,11 +1,14 @@
 import 'package:dartz/dartz.dart';
 import 'package:electricity/common/errors/failures.dart';
 import 'package:electricity/data/models/price_response.dart';
+import 'package:electricity/domain/entities/entities.dart';
 
-abstract class PriceRepository {
+abstract class Repository {
   Future<Either<Failure, PriceResponse?>> getPrices(
     String starDate,
     String endDate,
-    String geoId,
-      );
+    GeoId geoId,
+  );
+
+  Future<Either<Failure, GeoId>> getPlaceSharedPref();
 }

@@ -5,6 +5,7 @@ import 'package:dartz/dartz.dart';
 import 'package:electricity/common/errors/failures.dart';
 import 'package:electricity/common/utils/utils.dart';
 import 'package:electricity/domain/entities/entities.dart';
+import 'package:electricity/domain/usecases/place_usecase.dart';
 import 'package:electricity/domain/usecases/price_usecase.dart';
 import 'package:equatable/equatable.dart';
 
@@ -13,6 +14,7 @@ part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final PriceUsecase priceUsecase;
+  final PlaceUsecase placeUsecase;
   final List<GeoId> geoIds = Utils.getGeoIds();
 
   late DateTime date;
@@ -20,7 +22,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   late double valueMax;
   late double valueMin;
 
-  HomeBloc(this.priceUsecase) : super(const HomeLoadingState()) {
+  HomeBloc({
+    required this.priceUsecase,
+    required this.placeUsecase,
+  }) : super(const HomeLoadingState()) {
     on<LoadingEvent>(
       (event, emit) async {
         emit(const HomeLoadingState());
@@ -37,6 +42,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     );
   }
 
+  Future<Either<Failure, GeoId>> _getPlace() async {
+    final response = await placeUsecase.call(null);
+    return response;
+  }
+
   Future<Either<Failure, Prices>> _getPrices() async {
     date = DateTime(date.year, date.month, date.day);
     String startDate = date.toIso8601String();
@@ -45,7 +55,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     PricesParams params = PricesParams(
       startDate,
       endDate,
-      geoId.geoId,
+      geoId,
     );
     final response = await priceUsecase.call(params);
     return response;

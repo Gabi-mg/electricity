@@ -3,9 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:electricity/common/errors/failures.dart';
-import 'package:electricity/common/utils/utils.dart';
 import 'package:electricity/domain/entities/entities.dart';
-import 'package:electricity/domain/usecases/place_usecase.dart';
 import 'package:electricity/domain/usecases/price_usecase.dart';
 import 'package:equatable/equatable.dart';
 
@@ -14,37 +12,30 @@ part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final PriceUsecase priceUsecase;
-  final PlaceUsecase placeUsecase;
-  final List<GeoId> geoIds = Utils.getGeoIds();
 
-  late DateTime date;
+  DateTime date = DateTime.now();
   late GeoId geoId;
   late double valueMax;
   late double valueMin;
 
   HomeBloc({
     required this.priceUsecase,
-    required this.placeUsecase,
-  }) : super(const HomeLoadingState()) {
-    on<LoadingEvent>(
+  }) : super(const PricesLoadingState()) {
+    on<LoadingPriceEvent>(
       (event, emit) async {
-        emit(const HomeLoadingState());
+        emit(const PricesLoadingState());
+
         final prices = await _getPrices();
         prices.fold(
-          (failure) => emit(const HomeErrorState()),
+          (failure) => emit(const PricesErrorState()),
           (prices) {
             valueMax = _getValueMax(prices.included.attributes.values);
             valueMin = _getValueMin(prices.included.attributes.values);
-            emit(HomeLoadedState(newPrices: prices));
+            emit(PricesLoadedState(prices: prices));
           },
         );
       },
     );
-  }
-
-  Future<Either<Failure, GeoId>> _getPlace() async {
-    final response = await placeUsecase.call(null);
-    return response;
   }
 
   Future<Either<Failure, Prices>> _getPrices() async {

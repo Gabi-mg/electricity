@@ -40,7 +40,7 @@ class RepositoryImpl implements Repository {
     try {
       final data = await localDatasource.getPlace();
       return Right(data);
-    } on ServerException {
+    } on BBDDException {
       return Left(BBDDFailure());
     }
   }

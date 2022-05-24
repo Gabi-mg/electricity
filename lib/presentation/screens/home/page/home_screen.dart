@@ -23,33 +23,25 @@ class _Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final blocProvider = BlocProvider.of<HomeBloc>(context);
-    return RefreshIndicator(
-      onRefresh: () async {
-        blocProvider.add(const LoadingEvent());
-      },
-      child: Column(
-        children: [
-          Container(
-            margin: EdgeInsets.symmetric(vertical: 10),
-            child: const Text(
-              'Elija lugar y día que desee consultar',
-              style: TextStyle(fontSize: 16),
-            ),
+    return Column(
+      children: [
+        Container(
+          margin: const EdgeInsets.symmetric(vertical: 10),
+          child: const Text(
+            'Elija lugar y día que desee consultar',
+            style: TextStyle(fontSize: 16),
           ),
-          CustomDropdownWidget(
-            geoIds: blocProvider.geoIds,
-          ),
-          const InputDatepickerWidget(),
-          Divider(
-            thickness: 2,
-            color: Theme.of(context).primaryColor,
-          ),
-          const Expanded(
-            child: _ListPrices(),
-          ),
-        ],
-      ),
+        ),
+        const CustomDropdownWidget(),
+        const InputDatepickerWidget(),
+        Divider(
+          thickness: 2,
+          color: Theme.of(context).primaryColor,
+        ),
+        const Expanded(
+          child: _ListPrices(),
+        ),
+      ],
     );
   }
 }
@@ -66,8 +58,17 @@ class _ListPrices extends StatelessWidget {
     return BlocBuilder<HomeBloc, HomeState>(
       bloc: blocProvider,
       builder: (context, state) {
-        if (state.prices != null) {
-          List<Value> values = state.prices!.included.attributes.values;
+        if (state is PricesLoadingState) {
+          return const Center(
+            child: CircularProgressIndicator.adaptive(
+              strokeWidth: 6.0,
+            ),
+          );
+        } else if (state is PricesErrorState) {
+          return const ErrWidget();
+        } else {
+          state = state as PricesLoadedState;
+          List<Value> values = state.prices.included.attributes.values;
           return ListView.builder(
             itemCount: values.length,
             itemBuilder: (BuildContext context, int index) {
@@ -93,14 +94,6 @@ class _ListPrices extends StatelessWidget {
                 isCurrentValue: isValueNow,
               );
             },
-          );
-        } else if (state.isError) {
-          return const ErrWidget();
-        } else {
-          return const Center(
-            child: CircularProgressIndicator.adaptive(
-              strokeWidth: 6.0,
-            ),
           );
         }
       },

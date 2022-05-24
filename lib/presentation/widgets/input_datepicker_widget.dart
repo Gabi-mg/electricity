@@ -9,7 +9,7 @@ class InputDatepickerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final blocProvider = BlocProvider.of<HomeBloc>(context);
+    final blocProvider = BlocProvider.of<HomeBloc>(context, listen: false);
     final controller = TextEditingController();
     controller.text = Utils.formatDate(DateTime.now());
 
@@ -41,7 +41,7 @@ class InputDatepickerWidget extends StatelessWidget {
           if (selected != null) {
             controller.text = Utils.formatDate(selected);
             blocProvider.date = selected;
-            blocProvider.add(const LoadingEvent());
+            blocProvider.add(const LoadingPriceEvent());
           }
         },
       ),

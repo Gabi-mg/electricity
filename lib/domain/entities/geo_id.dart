@@ -1,4 +1,6 @@
-class GeoId {
+import 'package:equatable/equatable.dart';
+
+class GeoId extends Equatable{
   String geoId;
   String description;
 
@@ -16,4 +18,7 @@ class GeoId {
         "geoId": geoId,
         "description": description,
       };
+
+  @override
+  List<Object?> get props => [geoId, description];
 }

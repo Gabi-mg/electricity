@@ -9,6 +9,7 @@ import 'package:electricity/domain/repositories/repository.dart';
 import 'package:electricity/domain/usecases/place_usecase.dart';
 import 'package:electricity/domain/usecases/price_usecase.dart';
 import 'package:electricity/presentation/screens/home/bloc/home_bloc.dart';
+import 'package:electricity/presentation/widgets/custom_dropdown_widget/bloc/place_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/io_client.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -58,6 +59,9 @@ Future<void> initDi() async {
   //Blocs
   serviceLocator.registerFactory(() => HomeBloc(
         priceUsecase: serviceLocator(),
+      ));
+
+  serviceLocator.registerFactory(() => PlaceBloc(
         placeUsecase: serviceLocator(),
-  ));
+      ));
 }

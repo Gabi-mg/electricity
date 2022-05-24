@@ -18,7 +18,7 @@ class Utils {
 
   static List<GeoId> getGeoIds() {
     List<GeoId> geoIds = [];
-    GeoId geoId = GeoId(geoId: "8741", description: "Peninsula");
+    GeoId geoId = GeoId(geoId: "8741", description: "Península");
     geoIds.add(geoId);
     geoId = GeoId(geoId: "8742", description: "Canarias");
     geoIds.add(geoId);

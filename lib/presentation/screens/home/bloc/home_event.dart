@@ -4,8 +4,8 @@ abstract class HomeEvent extends Equatable {
   const HomeEvent();
 }
 
-class LoadingEvent extends HomeEvent {
-  const LoadingEvent();
+class LoadingPriceEvent extends HomeEvent {
+  const LoadingPriceEvent();
 
   @override
   List<Object?> get props => [];

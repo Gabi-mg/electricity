@@ -1,31 +1,30 @@
 part of 'home_bloc.dart';
 
 abstract class HomeState extends Equatable {
-  final Prices? prices;
-  final bool isError;
-
-  const HomeState({required this.prices, this.isError = false});
+  const HomeState();
 }
 
-class HomeLoadingState extends HomeState {
-  const HomeLoadingState() : super(prices: null);
+class PricesLoadingState extends HomeState {
+  const PricesLoadingState() : super();
 
   @override
   List<Object> get props => [];
 }
 
-class HomeLoadedState extends HomeState {
-  final Prices newPrices;
+class PricesLoadedState extends HomeState {
+  final Prices prices;
 
-  const HomeLoadedState({required this.newPrices}) : super(prices: newPrices);
+  const PricesLoadedState({required this.prices}) : super();
 
   @override
-  List<Object> get props => [newPrices];
+  List<Object> get props => [prices];
 }
 
-class HomeErrorState extends HomeState {
-  const HomeErrorState() : super(prices: null, isError: true);
+class PricesErrorState extends HomeState {
+  const PricesErrorState() : super();
 
   @override
   List<Object> get props => [];
 }
+
+

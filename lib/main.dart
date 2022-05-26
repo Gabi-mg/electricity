@@ -6,7 +6,6 @@ import 'package:electricity/di/injection.dart';
 import 'package:electricity/presentation/routes.dart';
 import 'package:electricity/presentation/screens/home/bloc/home_bloc.dart';
 import 'package:electricity/presentation/theme.dart';
-import 'package:electricity/presentation/widgets/custom_dropdown_widget/bloc/place_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
@@ -28,9 +27,6 @@ class AppState extends StatelessWidget {
         BlocProvider<HomeBloc>(
           create: (context) => serviceLocator<HomeBloc>(),
         ),
-        BlocProvider<PlaceBloc>(
-          create: (context) => serviceLocator<PlaceBloc>(),
-        ),
       ],
       child: const MyApp(),
     );
@@ -42,8 +38,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final placeBlocProvider = BlocProvider.of<PlaceBloc>(context);
-    placeBlocProvider.add(const LoadingPlaceEvent());
+    final priceBlocProvider = BlocProvider.of<HomeBloc>(context);
+    priceBlocProvider.add(const LoadingPriceEvent());
+
+    // Future.delayed(const Duration(seconds: 10), () {
+    //   final priceBlocProvider = BlocProvider.of<HomeBloc>(context);
+    //
+    //   priceBlocProvider.inAverage.add(10.0);
+    // });
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,

@@ -14,18 +14,22 @@ class InputDatepickerWidget extends StatelessWidget {
     controller.text = Utils.formatDate(DateTime.now());
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 60, vertical: 5),
+      margin: const EdgeInsets.symmetric(
+        horizontal: 10,
+        vertical: 5,
+      ),
       child: TextField(
         textAlign: TextAlign.center,
         controller: controller,
         autofocus: false,
         readOnly: true,
         decoration: const InputDecoration(
+          contentPadding: EdgeInsets.all(0),
           border: OutlineInputBorder(),
         ),
         onTap: () async {
           DateTime lastDate;
-          if (DateTime.now().hour > hourOpenApi) {
+          if (DateTime.now().hour >= hourOpenApi) {
             lastDate = DateTime.now().add(const Duration(days: 1));
           } else {
             lastDate = DateTime.now();
@@ -41,7 +45,6 @@ class InputDatepickerWidget extends StatelessWidget {
           if (selected != null) {
             controller.text = Utils.formatDate(selected);
             blocProvider.date = selected;
-            blocProvider.add(const LoadingPriceEvent());
           }
         },
       ),

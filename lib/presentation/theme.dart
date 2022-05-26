@@ -11,5 +11,11 @@ class CustomTheme {
       backgroundColor: primaryColor,
     ),
     fontFamily: 'Roboto',
+    scaffoldBackgroundColor: primaryColor,
+    textTheme: const TextTheme(
+      bodyText2: TextStyle(
+        fontSize: 16,
+      ),
+    ),
   );
 }

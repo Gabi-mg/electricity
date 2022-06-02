@@ -13,7 +13,8 @@ class Utils {
   }
 
   static String formatDate(DateTime dateTime) {
-    return '${dateTime.day}/${formatNumber0Left(dateTime.month, 2)}/${dateTime.year}';
+    return '${formatNumber0Left(dateTime.day, 2)}/'
+        '${formatNumber0Left(dateTime.month, 2)}/${dateTime.year}';
   }
 
   static List<GeoId> getGeoIds() {

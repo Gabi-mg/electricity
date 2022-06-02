@@ -52,7 +52,14 @@ void displayDialogSearch(BuildContext context) {
               priceBlocProvider.add(const LoadingPriceEvent());
               Navigator.pop(context);
             },
-            child: const Text('Aceptar'),
+            child: Text(
+              'Aceptar',
+              style: TextStyle(
+                color: Theme.of(context).primaryColor,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ],
       );
@@ -74,7 +81,7 @@ class _Body extends StatelessWidget {
       },
       child: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.all(5),
+          padding: const EdgeInsets.all(20),
           child: Column(
             children: [
               const _PriceNow(),
@@ -128,9 +135,8 @@ class _Body extends StatelessWidget {
                           color: Colors.red,
                         );
                       } else {
-                        return SizedBox(
-                          height: 150,
-                          child: const Center(
+                        return const SizedBox(
+                          child: Center(
                             child: CircularProgressIndicator.adaptive(),
                           ),
                         );
@@ -174,14 +180,8 @@ class _DetailPrices extends StatelessWidget {
       child: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
           if (state is PricesLoadingState) {
-            return const SizedBox(
-              height: 500,
-              width: double.infinity,
-              child: Center(
-                child: CircularProgressIndicator.adaptive(
-                  strokeWidth: 6.0,
-                ),
-              ),
+            return const Center(
+              child: CircularProgressIndicator.adaptive(),
             );
           } else if (state is PricesErrorState) {
             return const ErrWidget();

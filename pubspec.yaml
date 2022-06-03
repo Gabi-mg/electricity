@@ -65,6 +65,8 @@ dev_dependencies:
   json_serializable: ^6.2.0
   # API code generator
   chopper_generator: ^4.0.5
+  # Icons app -- flutter pub run flutter_launcher_icons:main
+  flutter_launcher_icons: ^0.9.2
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

@@ -17,6 +17,8 @@ class HourSummary extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: 120,
+      height: 100,
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(10),
@@ -54,8 +56,6 @@ class HourSummary extends StatelessWidget {
           )
         ],
       ),
-      width: 120,
-      height: 100,
     );
   }
 }

@@ -64,27 +64,31 @@ class _Details extends StatelessWidget {
         child: Column(
           children: [
             const _PriceNow(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                HourSummary(
-                  title: 'Precio más bajo',
-                  price: valueMin.valueKWh,
-                  hour: valueMin.hour,
-                  color: Colors.green,
-                ),
-                HourSummary(
-                  title: 'Precio medio',
-                  price: valueAverage.toStringAsFixed(5),
-                  color: Colors.orange,
-                ),
-                HourSummary(
-                  title: 'Precio más alto',
-                  price: valueMax.valueKWh,
-                  hour: valueMax.hour,
-                  color: Colors.red,
-                ),
-              ],
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  HourSummary(
+                    title: 'Precio más bajo',
+                    price: valueMin.valueKWh,
+                    hour: valueMin.hour,
+                    color: Colors.green,
+                  ),
+                  const SizedBox(width: 15),
+                  HourSummary(
+                    title: 'Precio medio',
+                    price: valueAverage.toStringAsFixed(5),
+                    color: Colors.orange,
+                  ),
+                  const SizedBox(width: 15),
+                  HourSummary(
+                    title: 'Precio más alto',
+                    price: valueMax.valueKWh,
+                    hour: valueMax.hour,
+                    color: Colors.red,
+                  ),
+                ],
+              ),
             ),
             Container(
               decoration: BoxDecoration(
@@ -120,6 +124,23 @@ class _Details extends StatelessWidget {
                     isCurrentValue: isValueNow,
                   );
                 },
+              ),
+            ),
+            const SizedBox(height: 10),
+            RichText(
+              text: const TextSpan(
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+                children: [
+                  TextSpan(
+                    text: 'Fuente: ',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  TextSpan(text: 'Red Eléctrica de España.'),
+                ],
               ),
             ),
           ],

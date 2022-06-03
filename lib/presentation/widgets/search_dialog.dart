@@ -3,8 +3,8 @@ import 'package:electricity/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SearchDialogWidget extends StatelessWidget {
-  const SearchDialogWidget({Key? key}) : super(key: key);
+class SearchDialog extends StatelessWidget {
+  const SearchDialog({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +17,8 @@ class SearchDialogWidget extends StatelessWidget {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: const [
-          CustomDropdownWidget(),
-          InputDatepickerWidget(),
+          CustomDropdown(),
+          CustomDatepicker(),
         ],
       ),
       actions: [

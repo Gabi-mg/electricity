@@ -2,7 +2,6 @@ import 'package:dartz/dartz.dart';
 import 'package:electricity/common/errors/failures.dart';
 import 'package:electricity/data/mapper.dart';
 import 'package:electricity/domain/entities/entities.dart';
-import 'package:electricity/domain/entities/prices.dart';
 import 'package:electricity/domain/repositories/repository.dart';
 import 'package:electricity/domain/usecases/usecase.dart';
 import 'package:equatable/equatable.dart';

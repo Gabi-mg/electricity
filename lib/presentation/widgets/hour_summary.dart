@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class ValuePriceWidget extends StatelessWidget {
-  const ValuePriceWidget({
+class HourSummary extends StatelessWidget {
+  const HourSummary({
     Key? key,
     required this.title,
     required this.price,

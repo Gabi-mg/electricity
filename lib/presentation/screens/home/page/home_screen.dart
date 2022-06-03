@@ -13,13 +13,13 @@ class HomeScreen extends StatelessWidget {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         if (state is PricesLoadingState) {
-          return const LoadingWidget();
+          return const CustomLoading();
         } else if (state is PricesErrorState) {
-          return const CustomScaffoldWidget(body: _Body(values: null));
+          return const CustomScaffold(body: _Body(values: null));
         } else {
           state = state as PricesLoadedState;
           List<Value> values = state.prices.included.attributes.values;
-          return CustomScaffoldWidget(body: _Body(values: values));
+          return CustomScaffold(body: _Body(values: values));
         }
       },
     );
@@ -42,7 +42,7 @@ class _Body extends StatelessWidget {
         priceBlocProvider.add(const LoadingPriceEvent());
         return Future.delayed(const Duration(seconds: 1));
       },
-      child: values == null ? const ErrWidget() : _Details(values: values!),
+      child: values == null ? const CustomError() : _Details(values: values!),
     );
   }
 }
@@ -55,9 +55,9 @@ class _Details extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final priceBlocProvider = BlocProvider.of<HomeBloc>(context);
-    final valueMax = priceBlocProvider.valueMax;
-    final valueMin = priceBlocProvider.valueMin;
-    final valueAverage = priceBlocProvider.valueAverage;
+    final valueMax = priceBlocProvider.maxValue;
+    final valueMin = priceBlocProvider.minValue;
+    final valueAverage = priceBlocProvider.averageValue;
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(10.0),
@@ -67,18 +67,18 @@ class _Details extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                ValuePriceWidget(
+                HourSummary(
                   title: 'Precio más bajo',
                   price: valueMin.valueKWh,
                   hour: valueMin.hour,
                   color: Colors.green,
                 ),
-                ValuePriceWidget(
+                HourSummary(
                   title: 'Precio medio',
                   price: valueAverage.toStringAsFixed(5),
                   color: Colors.orange,
                 ),
-                ValuePriceWidget(
+                HourSummary(
                   title: 'Precio más alto',
                   price: valueMax.valueKWh,
                   hour: valueMax.hour,
@@ -91,7 +91,7 @@ class _Details extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
                 color: Colors.white,
               ),
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
@@ -111,7 +111,7 @@ class _Details extends StatelessWidget {
 
                   bool isValueNow = priceBlocProvider.isValueNow(values[index]);
 
-                  return PriceWidget(
+                  return HourDetail(
                     value: value,
                     time: time,
                     color: color,
@@ -135,35 +135,39 @@ class _PriceNow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final priceBlocProvider = BlocProvider.of<HomeBloc>(context);
-    final valueCurrent = priceBlocProvider.valueCurrent;
+    final valueCurrent = priceBlocProvider.currentValue;
     return Container(
+      width: MediaQuery.of(context).size.width * 0.8,
+      height: 150,
       margin: const EdgeInsets.symmetric(horizontal: 50),
       padding: const EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: Colors.white,
       ),
-      height: 150,
       child: Column(
         children: [
-          const Text(
-            'Precio ahora',
-            style: TextStyle(fontSize: 20, color: Colors.grey),
-          ),
-          const Divider(
-            indent: 50,
-            endIndent: 50,
-            color: Colors.grey,
-            thickness: 2,
-          ),
-          Text(
-            '${valueCurrent.valueKWh}€',
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 20,
-              color: Colors.grey,
+          if (valueCurrent != null)
+            const Text(
+              'Precio ahora',
+              style: TextStyle(fontSize: 20, color: Colors.grey),
             ),
-          ),
+          if (valueCurrent != null)
+            const Divider(
+              indent: 50,
+              endIndent: 50,
+              color: Colors.grey,
+              thickness: 2,
+            ),
+          if (valueCurrent != null)
+            Text(
+              '${valueCurrent.valueKWh}€',
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 20,
+                color: Colors.grey,
+              ),
+            ),
           const SizedBox(
             height: 10,
           ),
@@ -176,7 +180,7 @@ class _PriceNow extends StatelessWidget {
             ),
           ),
           Text(
-            Utils.formatDate(valueCurrent.datetime),
+            Utils.formatDate(priceBlocProvider.date),
             textAlign: TextAlign.center,
             style: const TextStyle(fontSize: 20, color: Colors.grey),
           ),

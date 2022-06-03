@@ -4,8 +4,8 @@ import 'package:electricity/presentation/screens/home/bloc/home_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class InputDatepickerWidget extends StatelessWidget {
-  const InputDatepickerWidget({Key? key}) : super(key: key);
+class CustomDatepicker extends StatelessWidget {
+  const CustomDatepicker({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

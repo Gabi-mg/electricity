@@ -3,14 +3,14 @@ import 'package:electricity/presentation/screens/home/bloc/home_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class CustomDropdownWidget extends StatefulWidget {
-  const CustomDropdownWidget({Key? key}) : super(key: key);
+class CustomDropdown extends StatefulWidget {
+  const CustomDropdown({Key? key}) : super(key: key);
 
   @override
-  State<CustomDropdownWidget> createState() => _CustomDropdownWidgetState();
+  State<CustomDropdown> createState() => _CustomDropdownState();
 }
 
-class _CustomDropdownWidgetState extends State<CustomDropdownWidget> {
+class _CustomDropdownState extends State<CustomDropdown> {
   @override
   Widget build(BuildContext context) {
     final priceBlocProvider = BlocProvider.of<HomeBloc>(context, listen: false);

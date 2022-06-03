@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class PriceWidget extends StatelessWidget {
+class HourDetail extends StatelessWidget {
   final String value;
   final String time;
   final Color color;
@@ -8,7 +8,7 @@ class PriceWidget extends StatelessWidget {
   final bool isLowestPrice;
   final bool isCurrentValue;
 
-  const PriceWidget({
+  const HourDetail({
     Key? key,
     required this.value,
     required this.time,

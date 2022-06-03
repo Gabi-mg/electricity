@@ -20,35 +20,18 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   DateTime date = DateTime.now();
   GeoId? geoId;
-  late double valueMin;
-  late double valueMax;
-
-  final _averageStateController = StreamController<double>();
-  final _valueMaxStateController = StreamController<Value>();
-  final _valueMinStateController = StreamController<Value>();
-  final _valueCurrentStateController = StreamController<Value>();
-
-  Sink<double> get inAverage => _averageStateController.sink;
-
-  Stream<double> get outAverage => _averageStateController.stream;
-
-  Sink<Value> get inValueMax => _valueMaxStateController.sink;
-
-  Stream<Value> get outValueMax => _valueMaxStateController.stream;
-
-  Sink<Value> get inValueMin => _valueMinStateController.sink;
-
-  Stream<Value> get outValueMin => _valueMinStateController.stream;
-
-  Sink<Value> get inValueCurrent => _valueCurrentStateController.sink;
-
-  Stream<Value> get outValueCurrent => _valueCurrentStateController.stream;
+  late Value minValue;
+  late Value maxValue;
+  late Value? currentValue;
+  late double averageValue;
 
   HomeBloc({required this.priceUsecase, required this.placeUsecase})
       : super(const PricesLoadingState()) {
     on<LoadingPriceEvent>(
       (event, emit) async {
         emit(const PricesLoadingState());
+
+        // await Future.delayed(const Duration(seconds: 1));
 
         //geoId
         if (geoId == null) {
@@ -63,34 +46,21 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         prices.fold(
           (failure) => emit(const PricesErrorState()),
           (prices) {
-            double average =
-                _getAveragePrice(prices.included.attributes.values);
-            inAverage.add(average);
+            averageValue = _getAveragePrice(prices.included.attributes.values);
 
             Value valueMax = _getValueMax(prices.included.attributes.values);
-            inValueMax.add(valueMax);
-            this.valueMax = valueMax.value;
+            maxValue = valueMax;
 
             Value valueMin = _getValueMin(prices.included.attributes.values);
-            inValueMin.add(valueMin);
-            this.valueMin = valueMin.value;
+            minValue = valueMin;
 
-            Value currentValue =
-                _getCurrentValue(prices.included.attributes.values);
-            inValueCurrent.add(currentValue);
+            currentValue = _getCurrentValue(prices.included.attributes.values);
 
             emit(PricesLoadedState(prices: prices));
           },
         );
       },
     );
-  }
-
-  void dispose() {
-    _averageStateController.close();
-    _valueMaxStateController.close();
-    _valueMinStateController.close();
-    _valueCurrentStateController.close();
   }
 
   Future<Either<Failure, GeoId>> _getPlace() async {
@@ -113,6 +83,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   IntervalEnum getInterval(List<Value> values, Value currentValue) {
+    double valueMin = minValue.value;
+    double valueMax = maxValue.value;
     double interval = (valueMax - valueMin) / 3; //three parts
     if ((valueMin + interval) > currentValue.value) {
       return IntervalEnum.interval1;
@@ -153,8 +125,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     return average / values.length / 1000; //KWh
   }
 
-  Value _getCurrentValue(List<Value> values) {
-    Value value = values[0];
+  Value? _getCurrentValue(List<Value> values) {
+    Value? value;
     for (Value item in values) {
       if (item.datetime.day == DateTime.now().day &&
           item.datetime.month == DateTime.now().month &&
@@ -167,22 +139,15 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     return value;
   }
 
-  bool isValueMax(double currentValue) {
-    return currentValue == valueMax;
+  bool isValueMax(Value value) {
+    return value == maxValue;
   }
 
-  bool isValueMin(double currentValue) {
-    return currentValue == valueMin;
+  bool isValueMin(Value value) {
+    return value == minValue;
   }
 
   bool isValueNow(Value value) {
-    if (value.datetime.day == DateTime.now().day &&
-        value.datetime.month == DateTime.now().month &&
-        value.datetime.year == DateTime.now().year &&
-        value.datetime.hour < DateTime.now().hour + 1 &&
-        value.datetime.hour >= DateTime.now().hour) {
-      return true;
-    }
-    return false;
+    return value == currentValue;
   }
 }

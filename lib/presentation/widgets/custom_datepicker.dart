@@ -11,7 +11,7 @@ class InputDatepickerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final blocProvider = BlocProvider.of<HomeBloc>(context, listen: false);
     final controller = TextEditingController();
-    controller.text = Utils.formatDate(DateTime.now());
+    controller.text = Utils.formatDate(blocProvider.date);
 
     return Container(
       margin: const EdgeInsets.symmetric(

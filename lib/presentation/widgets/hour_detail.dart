@@ -21,6 +21,7 @@ class PriceWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 5),
       color: _getColorBackground(),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,

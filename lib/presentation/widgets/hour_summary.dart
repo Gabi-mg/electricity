@@ -14,7 +14,6 @@ class ValuePriceWidget extends StatelessWidget {
   final String price;
   final Color color;
 
-  //TODO check style
   @override
   Widget build(BuildContext context) {
     return Container(

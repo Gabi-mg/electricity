@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.erysoft.electricity">
+    package="com.example.electricity">
 
     <application
         android:name="${applicationName}"

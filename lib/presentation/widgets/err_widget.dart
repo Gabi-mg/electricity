@@ -9,14 +9,14 @@ class ErrWidget extends StatelessWidget {
       width: double.infinity,
       color: const Color.fromRGBO(247, 247, 247, 1),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: const [
           Image(
             width: 300.0,
             height: 300.0,
             image: AssetImage('assets/error.png'),
           ),
-          Text('Upss!!! Hubo un error. Inténtelo más tarde'),
+          Text('¡¡¡Upss!!! Hubo un error. Inténtelo más tarde'),
         ],
       ),
     );

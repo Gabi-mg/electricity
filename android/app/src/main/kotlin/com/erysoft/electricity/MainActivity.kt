@@ -1,4 +1,4 @@
-package com.example.electricity
+package com.erysoft.electricity
 
 import io.flutter.embedding.android.FlutterActivity
 
